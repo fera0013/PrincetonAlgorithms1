@@ -41,6 +41,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 	// delete and return a random item
 	public Item dequeue() 
 	{
+		if (isEmpty()) throw new NoSuchElementException();
 		int itemNumber = StdRandom.uniform(N);
 		Item removedItem = a[itemNumber];
 		a[itemNumber]=a[N-1];
@@ -50,6 +51,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 	// return (but do not delete) a random item
 	public Item sample()       
 	{
+		if (isEmpty()) throw new NoSuchElementException();
 		int itemNumber = StdRandom.uniform(N);
 		return a[itemNumber];
 	}
@@ -66,13 +68,10 @@ public class RandomizedQueue<Item> implements Iterable<Item>
             throw new UnsupportedOperationException();
         }
         public Item next() {
-            if (!hasNext()) throw new NoSuchElementException();
-            int itemNumber = StdRandom.uniform(N);
+        	if (isEmpty()) throw new NoSuchElementException();
+    		int itemNumber = StdRandom.uniform(N);
     		Item removedItem = a[itemNumber];
-    		for(int i=itemNumber;i<N;i++)
-    		{
-    			a[i]=a[i+1];
-    		}
+    		a[itemNumber]=a[N-1];
     		N--;
     		return removedItem;
         }       
