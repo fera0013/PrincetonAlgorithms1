@@ -1,7 +1,5 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 public class RandomizedQueue<Item> implements Iterable<Item> 
 {
@@ -77,27 +75,12 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     		}
     		N--;
     		return removedItem;
-        }
-		@Override
-		public void forEachRemaining(Consumer<? super Item> arg0) {
-			// TODO Auto-generated method stub
-			
-		}         
+        }       
     }
-	@Override
-	public void forEach(Consumer<? super Item> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 	@Override
 	public Iterator<Item> iterator() {
 		// TODO Auto-generated method stub
 		return new  RandomizedQueueIterator();
-	}
-	@Override
-	public Spliterator<Item> spliterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	public static void main(String[] args)   // unit testing
 	{

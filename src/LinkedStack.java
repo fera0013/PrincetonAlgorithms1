@@ -16,8 +16,7 @@
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
-import java.util.function.Consumer;
+
 
 
 /**
@@ -140,11 +139,6 @@ public class LinkedStack<Item> implements Iterable<Item> {
             current = current.next; 
             return item;
         }
-		@Override
-		public void forEachRemaining(Consumer<? super Item> arg0) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException();
-		}
     }
 
 
@@ -183,17 +177,5 @@ public class LinkedStack<Item> implements Iterable<Item> {
         }
         StdOut.println("(" + s.size() + " left on stack)");
     }
-
-	@Override
-	public void forEach(Consumer<? super Item> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Spliterator<Item> spliterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 

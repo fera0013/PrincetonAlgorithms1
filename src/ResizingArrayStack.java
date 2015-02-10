@@ -15,8 +15,6 @@
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 /**
  *  The <tt>ResizingArrayStack</tt> class represents a last-in-first-out (LIFO) stack
@@ -139,12 +137,6 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
             if (!hasNext()) throw new NoSuchElementException();
             return a[--i];
         }
-
-		@Override
-		public void forEachRemaining(Consumer<? super Item> arg0) {
-			// TODO Auto-generated method stub
-			
-		}
     }
 
 
@@ -160,16 +152,4 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
         }
         StdOut.println("(" + s.size() + " left on stack)");
     }
-
-	@Override
-	public void forEach(Consumer<? super Item> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Spliterator<Item> spliterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

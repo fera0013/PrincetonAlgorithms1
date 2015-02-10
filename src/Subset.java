@@ -2,15 +2,15 @@ public class Subset
 {
    public static void main(String[] args)
    {
-       int k = 3; 
+	   In in = new In(args[0]);     
+       int k= in.readInt(); 
        RandomizedQueue<String> randomQueue = new RandomizedQueue<String>();
-       for(int i =0;i<9;i++)
-       {
-    	   randomQueue.enqueue(StdIn.readString());
-       }
+       String currentString="";
+       while((currentString=StdIn.readString())!=null)
+    	   randomQueue.enqueue(currentString);
        for(int i=0;i<k;i++)
        {
-    	   System.out.println(randomQueue.dequeue());
+    	   StdOut.println(randomQueue.dequeue());
        }
    }
 }

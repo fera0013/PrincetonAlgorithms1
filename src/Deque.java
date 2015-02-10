@@ -1,7 +1,5 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 //Implementation of a Deque according to requirements given by http://coursera.cs.princeton.edu/algs4/assignments/queues.html
 //Class is tested by a series of unit tests performed during uploading to coursera servers
@@ -140,11 +138,6 @@ public class Deque<Item> implements Iterable<Item> {
             current = current.next; 
             return item;
         }
-		@Override
-		public void forEachRemaining(Consumer<? super Item> arg0) {
-			// TODO Auto-generated method stub
-			
-		}
     }	
  
 	public static void main
@@ -159,15 +152,5 @@ public class Deque<Item> implements Iterable<Item> {
 		length = deque.size();
 		int lastItem=deque.removeLast();
 		length = deque.size();
-	}
-	@Override
-	public void forEach(Consumer<? super Item> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public Spliterator<Item> spliterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
