@@ -126,7 +126,7 @@ public class Deque<Item> implements Iterable<Item> {
         private Node current = first;
         public boolean hasNext()  
         { 
-        	return current != last;   
+        	return current != last.previous;   
         }
         public void remove()     
         {
@@ -145,14 +145,11 @@ public class Deque<Item> implements Iterable<Item> {
 	(String[] args) 
 	{
 		Deque<Integer> intDeque=new Deque<Integer>();
-		for(int i =0;i<10;i++)
-		{
-			intDeque.addFirst(i);
-		}
-		for(int i =0;i<10;i++)
-		{
-			int last=intDeque.removeLast();
-			assert last==i;
-		}
+	    intDeque.addFirst(1);
+	    assert intDeque.size()==1;
+	    int first= intDeque.removeFirst();
+	    assert intDeque.size()==0;
+	    intDeque.addLast(1);
+	    
 	}
 }

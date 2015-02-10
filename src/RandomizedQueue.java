@@ -16,6 +16,14 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         }
         a = temp;
     }
+    //Check for null item
+    private void validateItem(Item item)
+    {
+    	if(item == null)
+    	{
+    		throw new java.lang.NullPointerException();
+    	}
+    }
     // construct an empty randomized queue
 	public RandomizedQueue()          
 	{
@@ -34,9 +42,10 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 	// add the item
 	public void enqueue(Item item)           
 	{
-		 if (N == a.length) 
-			 resize(2*a.length);  // double size of array if necessary
-		 a[N++] = item;       
+		validateItem(item);
+		if (N == a.length) 
+			resize(2*a.length);  // double size of array if necessary
+		a[N++] = item;       
 	}
 	// delete and return a random item
 	public Item dequeue() 
