@@ -24,7 +24,15 @@ public class Point implements Comparable<Point> {
 		    		{
 		    			throw new NullPointerException();
 		    		}
-		    		return (int) (slopeTo(p1)-slopeTo(p2));
+		    		else if(slopeTo(p1)==slopeTo(p2))
+		    		{
+		    			return 0;
+		    		}
+		    		else if(slopeTo(p1)<slopeTo(p2))
+		    		{
+		    			return -1;
+		    		}
+		    		return 1;
 		    	}
     		};     
 
@@ -52,6 +60,21 @@ public class Point implements Comparable<Point> {
     	if(that==null)
     	{
     		throw new NullPointerException();
+    	}
+    	//Points identity: return negativeInfinity according to specification
+    	if(this.x==that.x&&this.y==that.y)
+    	{
+    		return Double.NEGATIVE_INFINITY;
+    	}
+    	//Vertical slope: Return positive infinity according to specification
+    	if(this.x==that.x)
+    	{
+    		return Double.POSITIVE_INFINITY;
+    	}
+    	//Horizontal slope: Return positive zero according to specification
+    	if(this.y==that.y)
+    	{
+    		return 0.0;
     	}
     	double deltay = (double)that.y-(double)this.y;
     	double deltax = (double)that.x-(double)this.x;
@@ -81,5 +104,10 @@ public class Point implements Comparable<Point> {
     // unit test
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+    	Point p1=new Point(112,165);
+    	Point p2=new Point(71,165);
+    	double slope=p1.slopeTo(p2);
+    	Out out = new Out();
+    	out.print(slope);
     }
-}
+;}
