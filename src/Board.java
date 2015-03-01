@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class Board {
 	private int N;
-	private int tiles[][];
+	private final int tiles[][];
 	// construct a board from an N-by-N array of blocks
     // (where blocks[i][j] = block in row i, column j)
 	public Board(int[][] blocks)      
@@ -81,9 +81,18 @@ public class Board {
 		int[][] twinTiles = new int[tiles.length][tiles[0].length];
 		for (int i = 0; i < tiles.length; i++)
 			twinTiles[i] = Arrays.copyOf(tiles[i], tiles[i].length);
-		int firstTile=tiles[N-1][0];
-		twinTiles[N-1][0]=tiles[N-1][1];
-		twinTiles[N-1][1]=firstTile;
+		if(twinTiles[N-1][0]!=0&&twinTiles[N-1][1]!=0)
+		{
+			int firstTile=tiles[N-1][0];
+			twinTiles[N-1][0]=tiles[N-1][1];
+			twinTiles[N-1][1]=firstTile;
+		}
+		else
+		{
+			int firstTile=tiles[0][0];
+			twinTiles[0][0]=tiles[0][1];
+			twinTiles[0][1]=firstTile;
+		}
 		return new Board(twinTiles);
 	}
 	// does this board equal y?
@@ -123,6 +132,12 @@ public class Board {
 						neighbors.push(GetNeighborBoard(i,j,(i+1),j));
 						neighbors.push(GetNeighborBoard(i,j,i,(j-1)));	
 					}
+					//empty at bottom right corner
+					if(i==(N-1)&&j==(N-1))
+					{
+						neighbors.push(GetNeighborBoard(i,j,(i-1),j));
+						neighbors.push(GetNeighborBoard(i,j,i,(j-1)));	
+					}
 					//empty at top row
 					else if(i==0&&j>0&&j<(N-1))
 					{
@@ -141,6 +156,13 @@ public class Board {
 					else if(j==(N-1)&&i>0&&i<(N-1))
 					{
 						neighbors.push(GetNeighborBoard(i,j,i,(j-1)));
+						neighbors.push(GetNeighborBoard(i,j,(i+1),j));
+						neighbors.push(GetNeighborBoard(i,j,(i-1),j));
+					}
+					//empty at left column
+					else if(j==0&&i>0&&i<(N-1))
+					{
+						neighbors.push(GetNeighborBoard(i,j,i,(j+1)));
 						neighbors.push(GetNeighborBoard(i,j,(i+1),j));
 						neighbors.push(GetNeighborBoard(i,j,(i-1),j));
 					}
@@ -171,4 +193,11 @@ public class Board {
 		    }
 		    return s.toString();
 	}
+	public static void main(String[] args)
+    {
+    	int tiles[][]={ {1, 2} , { 0, 3} };
+    	Board board=new Board(tiles);
+    	Board twin=board.twin();
+    	assert(board!=twin);
+    }
 }
