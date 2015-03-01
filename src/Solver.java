@@ -1,5 +1,5 @@
 public class Solver {
-	private Board initialBoard;
+	private final Board initialBoard;
 	private SearchNode currentNode;
 	private SearchNode currentTwinNode;
 	private Boolean isSolvable=null;
@@ -121,10 +121,11 @@ public class Solver {
     	{
 	    	Stack<Board> solutionTrace=new Stack<Board>();
 	    	solutionTrace.push(currentNode.board);
-	    	while(currentNode.previous!=null)
+	    	SearchNode node = currentNode;
+	    	while(node.previous!=null)
 	    	{
-	    		solutionTrace.push(currentNode.previous.board);
-	    		currentNode=currentNode.previous;
+	    		solutionTrace.push(node.previous.board);
+	    		node=node.previous;
 	    	}
 	    	return solutionTrace;
     	}

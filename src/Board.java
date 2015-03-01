@@ -2,7 +2,9 @@ import java.util.Arrays;
 
 
 public class Board {
-	private int N;
+	private int manhattan =-1;
+	private int hamming =-1;
+	private final int N;
 	private final int tiles[][];
 	// construct a board from an N-by-N array of blocks
     // (where blocks[i][j] = block in row i, column j)
@@ -29,46 +31,52 @@ public class Board {
 	// number of blocks out of place
 	public int hamming()       
 	{
-		int numberOfOutOfPlaceBlocks=0;
-		for(int i=0;i<N;i++)
+		if(hamming==-1)
 		{
-			for(int j=0;j<N;j++)
+			hamming=0;
+			for(int i=0;i<N;i++)
 			{
-				if(tiles[i][j]==0)
+				for(int j=0;j<N;j++)
 				{
-					continue;
-				}
-				int correctElementAtCurrentPosition= i==(N-1)&&j==(N-1)? 0:(i*N+1)+j;
-				int actualElementAtCurrentPosition=tiles[i][j];
-				if(correctElementAtCurrentPosition!=actualElementAtCurrentPosition)
-				{
-					numberOfOutOfPlaceBlocks++;
+					if(tiles[i][j]==0)
+					{
+						continue;
+					}
+					int correctElementAtCurrentPosition= i==(N-1)&&j==(N-1)? 0:(i*N+1)+j;
+					int actualElementAtCurrentPosition=tiles[i][j];
+					if(correctElementAtCurrentPosition!=actualElementAtCurrentPosition)
+					{
+						hamming++;
+					}
 				}
 			}
 		}
-		return numberOfOutOfPlaceBlocks;
+		return hamming;
 	}
 	// sum of Manhattan distances between blocks and goal
 	public int manhattan()
 	{
-		int manhattanDistance=0;
-		for(int i=0;i<N;i++)
+		if(manhattan==-1)
 		{
-			for(int j=0;j<N;j++)
+			manhattan=0;
+			for(int i=0;i<N;i++)
 			{
-				int tile=tiles[i][j];
-				if(tile==0)
+				for(int j=0;j<N;j++)
 				{
-					continue;
+					int tile=tiles[i][j];
+					if(tile==0)
+					{
+						continue;
+					}
+					int realI=(tile-1)/N;
+					int realJ=(tile-1)%N;
+					int horizontalDistance= Math.abs(realI-i);
+					int verticalDistance = Math.abs(realJ-j);
+					manhattan+=(horizontalDistance+verticalDistance);
 				}
-				int realI=(tile-1)/N;
-				int realJ=(tile-1)%N;
-				int horizontalDistance= Math.abs(realI-i);
-				int verticalDistance = Math.abs(realJ-j);
-				manhattanDistance+=(horizontalDistance+verticalDistance);
 			}
 		}
-		return manhattanDistance;
+		return manhattan;
 	}
 	// is this board the goal board?
 	public boolean isGoal()      
