@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class KdTree {
 	private static class Node {
 		   private Point2D p;      // the point
@@ -43,11 +45,11 @@ public class KdTree {
         {
         	if(p.x()<node.p.x())
         	{
-        		node.left = put(node.left,p,orientation.HORIZONTAL,new RectHV(rect.xmin(),rect.ymin(),p.x(),rect.ymax()));
+        		node.left = put(node.left,p,orientation.HORIZONTAL,new RectHV(rect.xmin(),rect.ymin(),node.p.x(),rect.ymax()));
         	}
         	else
         	{
-        		node.right = put(node.right,p,orientation.HORIZONTAL,new RectHV(p.x(),rect.ymin(),rect.xmax(),rect.ymax()));
+        		node.right = put(node.right,p,orientation.HORIZONTAL,new RectHV(node.p.x(),rect.ymin(),rect.xmax(),rect.ymax()));
         	}
         }
         else
@@ -55,11 +57,11 @@ public class KdTree {
 
         	if(p.y()<node.p.y())
         	{
-        		node.left = put(node.left,p,orientation.VERTICAL,new RectHV(rect.xmin(),rect.ymin(),rect.xmax(),p.y()));
+        		node.left = put(node.left,p,orientation.VERTICAL,new RectHV(rect.xmin(),rect.ymin(),rect.xmax(),node.p.y()));
         	}
         	else
         	{
-        		node.right = put(node.right,p,orientation.VERTICAL,new RectHV(rect.xmin(),p.y(),rect.xmax(),rect.ymax()));
+        		node.right = put(node.right,p,orientation.VERTICAL,new RectHV(rect.xmin(),node.p.y(),rect.xmax(),rect.ymax()));
         	}
         }
         return node;
@@ -124,22 +126,41 @@ public class KdTree {
 		if(o==orientation.VERTICAL)
 		{
 			StdDraw.setPenColor(StdDraw.RED);
-			node.rect.draw();
+			Point2D pointFrom = new Point2D(node.p.x(),node.rect.ymin());
+			Point2D pointTo = new Point2D(node.p.x(),node.rect.ymax());
+			pointFrom.drawTo(pointTo);
 			drawHelper(node.left,orientation.HORIZONTAL);
 			drawHelper(node.right,orientation.HORIZONTAL);
 		}
 		else
 		{
 			StdDraw.setPenColor(StdDraw.BLUE);
-			node.rect.draw();
+			Point2D pointFrom = new Point2D(node.rect.xmin(),node.p.y());
+			Point2D pointTo = new Point2D(node.rect.xmax(),node.p.y());
+			pointFrom.drawTo(pointTo);
 			drawHelper(node.left,orientation.VERTICAL);
 			drawHelper(node.right,orientation.VERTICAL);
 		}
 	}
+	private Stack<Point2D> rangeHelper(Node node, RectHV rect,Stack<Point2D> points )
+	{
+		if(!node.rect.intersects(rect))
+		{
+			return points;
+		}
+		else
+		{
+			points.push(node.p);
+			points = rangeHelper(node.left,rect,points);
+			points = rangeHelper(node.right,rect,points);
+		}
+		return points;
+	}
 	// all points that are inside the rectangle 
 	public Iterable<Point2D> range(RectHV rect)
 	{
-		return null;
+		Stack<Point2D> points=new Stack<Point2D>();
+		return rangeHelper(root, rect,points);
 	}
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p)  
