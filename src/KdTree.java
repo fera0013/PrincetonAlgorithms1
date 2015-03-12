@@ -38,7 +38,6 @@ public class KdTree {
         	Node newNode = new Node();
         	newNode.p=p;
         	newNode.rect=rect;
-        	numberOfPoints++;
         	return newNode;
         }
         if(o==orientation.VERTICAL)
@@ -64,6 +63,7 @@ public class KdTree {
         		node.right = put(node.right,p,orientation.VERTICAL,new RectHV(rect.xmin(),node.p.y(),rect.xmax(),rect.ymax()));
         	}
         }
+    	numberOfPoints++;
         return node;
 	}
 	// does the set contain point p? 
@@ -71,7 +71,7 @@ public class KdTree {
 	{
 		return get(p,orientation.VERTICAL)!=null;
 	}
-	public Point2D get(Point2D key,orientation o) 
+	private Point2D get(Point2D key,orientation o) 
 	{
 		return get(root, key,o);
 	}
@@ -144,13 +144,16 @@ public class KdTree {
 	}
 	private Stack<Point2D> rangeHelper(Node node, RectHV rect,Stack<Point2D> points )
 	{
-		if(!node.rect.intersects(rect))
+		if(!node.rect.intersects(rect)||node==null)
 		{
 			return points;
 		}
 		else
 		{
-			points.push(node.p);
+			if(rect.contains(node.p))
+			{
+				points.push(node.p);
+			}
 			points = rangeHelper(node.left,rect,points);
 			points = rangeHelper(node.right,rect,points);
 		}

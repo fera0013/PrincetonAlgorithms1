@@ -3,8 +3,6 @@ private SET<Point2D> pointSet = new SET<Point2D>();
 	// construct an empty set of points 
 	public PointSET()
 	{
-		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.setPenRadius(.01);
 	}
 	// is the set empty? 
 	public boolean isEmpty() 
@@ -59,12 +57,13 @@ private SET<Point2D> pointSet = new SET<Point2D>();
 			return null;
 		}
 		Point2D nearest=null;
-		while(pointSet.iterator().hasNext())
+		double smallestDistance=Double.MAX_VALUE;
+		for(Point2D point : pointSet)
 		{
-			Point2D currentPoint = pointSet.iterator().next();
-			if(currentPoint.distanceTo(p)<currentPoint.distanceTo(nearest))
+			if(point.distanceTo(p)<smallestDistance)
 			{
-				nearest = currentPoint;
+				nearest = point;
+				smallestDistance=point.distanceTo(p);
 			}
 		}
 		return nearest;
