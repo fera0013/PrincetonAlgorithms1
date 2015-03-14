@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class KdTree {
 	private static class Node {
 		   private Point2D p;      // the point
@@ -38,6 +36,7 @@ public class KdTree {
         	Node newNode = new Node();
         	newNode.p=p;
         	newNode.rect=rect;
+        	numberOfPoints++;
         	return newNode;
         }
         if(o==orientation.VERTICAL)
@@ -63,7 +62,6 @@ public class KdTree {
         		node.right = put(node.right,p,orientation.VERTICAL,new RectHV(rect.xmin(),node.p.y(),rect.xmax(),rect.ymax()));
         	}
         }
-    	numberOfPoints++;
         return node;
 	}
 	// does the set contain point p? 
@@ -144,7 +142,7 @@ public class KdTree {
 	}
 	private Stack<Point2D> rangeHelper(Node node, RectHV rect,Stack<Point2D> points )
 	{
-		if(!node.rect.intersects(rect)||node==null)
+		if(node==null||!node.rect.intersects(rect))
 		{
 			return points;
 		}
@@ -168,7 +166,21 @@ public class KdTree {
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p)  
 	{
-		return null;
+		return findNearest(p,root.p,root);
+	}
+	private Point2D findNearest(Point2D queryPoint,Point2D nearest,Node node)
+	{
+		if(node==null||nearest.distanceTo(queryPoint)<node.rect.distanceTo(queryPoint))
+		{
+			return nearest;
+		}
+		if(node.p.distanceTo(queryPoint)<nearest.distanceTo(queryPoint))
+		{
+			nearest=node.p;
+		}
+		nearest=findNearest(queryPoint,nearest,node.left);
+		nearest=findNearest(queryPoint,nearest,node.right);
+		return nearest;
 	}
 	// unit testing of the methods (optional)
 	public static void main(String[] args)
@@ -183,6 +195,8 @@ public class KdTree {
 	            Point2D p = new Point2D(x, y);
 	            kdtree.insert(p);
 	        }
+	        Out out = new Out();
+	        out.println(kdtree.size());
 	        // draw the points
 	        kdtree.draw();
 	        StdDraw.show(1);
