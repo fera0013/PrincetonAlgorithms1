@@ -7,7 +7,7 @@ public class Fast {
         int numberOfPoints =  in.readInt();
         Point[] points = new Point[numberOfPoints]; 
         Point[] lineSequences = new Point[numberOfPoints];
-        SET<Double> slopes=new SET<Double>();
+        SET<Double> uniqueLineIdentifiers=new SET<Double>();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768); 
         for(int i=0;i<numberOfPoints;i++)
@@ -28,13 +28,28 @@ public class Fast {
         		{
         			if(ithPoint.slopeTo(lineSequences[j])==ithPoint.slopeTo(lineSequences[j+1]))
         			{
-        				if(slopes.contains(ithPoint.slopeTo(lineSequences[j])))
+        				double slope=ithPoint.slopeTo(lineSequences[j]);
+        				String[] split= ithPoint.toString().split("(\\()|(\\))|(,)|( )");
+    					double x=Double.parseDouble(split[1]);
+    					double uniqueLineIdentifier;
+    					if(Double.isInfinite(slope))
+    					{
+    						//use the x-intercept to differenciate between vertical lines
+    						uniqueLineIdentifier=x;
+    					}
+    					else
+    					{
+    						//use the y intercept to differenciate between non-vertical lines with the same slope
+    						double y=Double.parseDouble(split[3]);
+    						uniqueLineIdentifier=-(slope*x)+y+slope;
+    					}
+        				if(uniqueLineIdentifiers.contains(uniqueLineIdentifier))
         				{
         					continue;
         				}
         				else
         				{
-        					slopes.add(ithPoint.slopeTo(lineSequences[j]));
+        					uniqueLineIdentifiers.add(uniqueLineIdentifier);
         				}
         				lineSequences[j-1]=ithPoint;
         				Arrays.sort(lineSequences,j-1,j+3);
