@@ -39,9 +39,8 @@ private SET<Point2D> pointSet = new SET<Point2D>();
 	public Iterable<Point2D> range(RectHV rect) 
 	{
 		Stack<Point2D> points=new Stack<Point2D>();
-		while(pointSet.iterator().hasNext())
+		for(Point2D point:pointSet)
 		{
-			Point2D point = pointSet.iterator().next();
 			if(rect.contains(point))
 			{
 				points.push(point);
