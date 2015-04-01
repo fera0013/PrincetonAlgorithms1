@@ -29,6 +29,7 @@ public class KdTree {
 	{
 		RectHV rect= new RectHV(0, 0, 1, 1);
 		root = put(root, p,orientation.VERTICAL,rect);
+		numberOfPoints++;
 	}
 	private Node put(Node node, Point2D p,orientation o,RectHV rect) {
         if (node == null) 
@@ -36,8 +37,12 @@ public class KdTree {
         	Node newNode = new Node();
         	newNode.p=p;
         	newNode.rect=rect;
-        	numberOfPoints++;
         	return newNode;
+        }
+        if(node.p.equals(p))
+        {
+        	numberOfPoints--;
+        	return node;
         }
         if(o==orientation.VERTICAL)
         {
@@ -45,7 +50,7 @@ public class KdTree {
         	{
         		node.left = put(node.left,p,orientation.HORIZONTAL,new RectHV(rect.xmin(),rect.ymin(),node.p.x(),rect.ymax()));
         	}
-        	else
+        	else if(p.x()>node.p.x())
         	{
         		node.right = put(node.right,p,orientation.HORIZONTAL,new RectHV(node.p.x(),rect.ymin(),rect.xmax(),rect.ymax()));
         	}
@@ -195,6 +200,8 @@ public class KdTree {
 	            Point2D p = new Point2D(x, y);
 	            kdtree.insert(p);
 	        }
+	        Point2D p=new Point2D(0.500000, 1.000000);
+	        kdtree.insert(p);
 	        Out out = new Out();
 	        out.println(kdtree.size());
 	        // draw the points
