@@ -147,32 +147,34 @@ public class KdTree {
 			drawHelper(node.right,orientation.VERTICAL);
 		}
 	}
-	private Stack<Point2D> rangeHelper(Node node, RectHV rect,Stack<Point2D> points )
+	private void rangeHelper(Node node, RectHV rect,SET<Point2D> result )
 	{
-		if(node==null||!node.rect.intersects(rect))
-		{
-			return points;
-		}
-		else
-		{
-			if(rect.contains(node.p))
-			{
-				points.push(node.p);
-			}
-			points = rangeHelper(node.left,rect,points);
-			points = rangeHelper(node.right,rect,points);
-		}
-		return points;
+		if (node == null)
+            return;
+
+        if (!rect.intersects(node.rect))
+            return;
+
+        if (rect.contains(node.p))
+            result.add(node.p);
+
+        rangeHelper(node.left, rect, result);
+        rangeHelper(node.right, rect, result);
 	}
 	// all points that are inside the rectangle 
 	public Iterable<Point2D> range(RectHV rect)
 	{
-		Stack<Point2D> points=new Stack<Point2D>();
-		return rangeHelper(root, rect,points);
+		SET<Point2D> result = new SET<Point2D>();
+		rangeHelper(root, rect,result);
+		return result;
 	}
 	// a nearest neighbor in the set to point p; null if the set is empty 
 	public Point2D nearest(Point2D p)  
 	{
+		if(this.numberOfPoints==0)
+		{
+			return null;
+		}
 		return findNearest(p,root.p,root);
 	}
 	private Point2D findNearest(Point2D queryPoint,Point2D nearest,Node node)
