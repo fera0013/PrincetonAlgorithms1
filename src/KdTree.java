@@ -27,9 +27,12 @@ public class KdTree {
 	// add the point to the set (if it is not already in the set)
 	public void insert(Point2D p)              
 	{
-		RectHV rect= new RectHV(0, 0, 1, 1);
-		root = put(root, p,orientation.VERTICAL,rect);
-		numberOfPoints++;
+		if(!contains(p))
+		{
+			RectHV rect= new RectHV(0, 0, 1, 1);
+			root = put(root, p,orientation.VERTICAL,rect);
+			this.numberOfPoints++;
+		}
 	}
 	private Node put(Node node, Point2D p,orientation o,RectHV rect) {
         if (node == null) 
@@ -41,7 +44,6 @@ public class KdTree {
         }
         if(node.p.equals(p))
         {
-        	numberOfPoints--;
         	return node;
         }
         if(o==orientation.VERTICAL)
@@ -50,7 +52,7 @@ public class KdTree {
         	{
         		node.left = put(node.left,p,orientation.HORIZONTAL,new RectHV(rect.xmin(),rect.ymin(),node.p.x(),rect.ymax()));
         	}
-        	else if(p.x()>node.p.x())
+        	else 
         	{
         		node.right = put(node.right,p,orientation.HORIZONTAL,new RectHV(node.p.x(),rect.ymin(),rect.xmax(),rect.ymax()));
         	}
